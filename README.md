@@ -1,5 +1,11 @@
 # Generics Methods
  
+Intermediate level task for practice generic classes and interfaces.
+
+Estimated time to complete the task - 2h.
+
+The task requires .NET 8 SDK installed.
+
 ## Task Description
 
 * Implement the generic methods of the [ArrayExtension](GenericMethods/ArrayExtension.cs#L10) class.
