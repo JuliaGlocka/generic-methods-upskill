@@ -4,11 +4,11 @@ namespace DoubleTransformer
 {
     public class GetIeee754Format : ITransformer<double, string>
     {
-        public string Transform(double value)
+        public string Transform(double obj)
         {
             unsafe
             {
-                ulong bits = *(ulong*)&value;
+                ulong bits = *(ulong*)&obj;
                 char[] chars = new char[64];
                 for (int i = 63; i >= 0; i--)
                 {

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Comparators;
 using DoubleTransformer;
 using GenericMethods.Interfaces;

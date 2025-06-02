@@ -19,10 +19,10 @@ namespace IntegerPredicate
 
         public int Digit { get; set; }
 
-        public bool IsMatch(int number)
+        public bool IsMatch(int obj)
         {
             // Special handling for int.MinValue
-            if (number == int.MinValue)
+            if (obj == int.MinValue)
             {
                 int n = int.MinValue;
                 do
@@ -39,7 +39,7 @@ namespace IntegerPredicate
                 return false;
             }
 
-            int absNumber = Math.Abs(number);
+            int absNumber = Math.Abs(obj);
 
             if (absNumber == 0 && this.Digit == 0)
             {
