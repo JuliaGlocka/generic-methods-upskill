@@ -84,10 +84,7 @@ namespace GenericMethods
         // 5. Reverse<T>
         public static T[] Reverse<T>(this T[] source)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
+            if (source == null) {throw new ArgumentNullException(nameof(source));}
             var copy = (T[])source.Clone();
             Array.Reverse(copy);
             return copy;
