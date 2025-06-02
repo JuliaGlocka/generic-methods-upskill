@@ -1,11 +1,12 @@
 using System;
+using GenericMethods.Interfaces;
 
 namespace IntegerPredicate
 {
     /// <summary>
     /// Predicate that checks if an integer contains a specific digit.
     /// </summary>
-    public class ContainsDigitPredicate
+    public class ContainsDigitPredicate : IPredicate<int>
     {
         public ContainsDigitPredicate(int digit)
         {
@@ -21,6 +22,23 @@ namespace IntegerPredicate
 
         public bool IsMatch(int number)
         {
+            // Special handling for int.MinValue
+            if (number == int.MinValue)
+            {
+                int n = int.MinValue;
+                do
+                {
+                    if (Math.Abs(n % 10) == this.Digit)
+                    {
+                        return true;
+                    }
+
+                    n /= 10;
+                } while (n != 0);
+
+                return false;
+            }
+
             int absNumber = Math.Abs(number);
 
             if (absNumber == 0 && this.Digit == 0)

@@ -7,7 +7,9 @@ namespace Comparators
     {
         public int Compare(int x, int y)
         {
-            return Math.Abs(x).CompareTo(Math.Abs(y));
+            long absX = x == int.MinValue ? (long)int.MaxValue + 1 : Math.Abs(x);
+            long absY = y == int.MinValue ? (long)int.MaxValue + 1 : Math.Abs(y);
+            return absX.CompareTo(absY);
         }
     }
 }
