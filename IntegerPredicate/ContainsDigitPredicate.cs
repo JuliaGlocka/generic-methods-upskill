@@ -17,26 +17,25 @@ namespace IntegerPredicate
 
         public int Digit { get; set; }
 
-        public bool IsMatch(int value)
+        public bool IsMatch(int obj)
         {
             int digit = Math.Abs(this.Digit);
 
-            // Special case: digit == 0 and value == 0
-            if (digit == 0 && value == 0)
+            // Special case: digit == 0 and obj == 0
+            if (digit == 0 && obj == 0)
             {
                 return true;
             }
 
-            // Use string-based approach to avoid Math.Abs(int.MinValue) overflow
             string digitStr = digit.ToString(CultureInfo.InvariantCulture);
-            string valueStr = value.ToString(CultureInfo.InvariantCulture);
+            string objStr = obj.ToString(CultureInfo.InvariantCulture);
 
-            if (valueStr.StartsWith('-'))
+            if (objStr.StartsWith('-'))
             {
-                valueStr = valueStr.Substring(1);
+                objStr = objStr.Substring(1);
             }
 
-            return valueStr.Contains(digitStr, StringComparison.Ordinal);
+            return objStr.Contains(digitStr, StringComparison.Ordinal);
         }
     }
 }
