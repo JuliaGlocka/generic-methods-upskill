@@ -1,4 +1,4 @@
-using DoubleTransformer;
+﻿using DoubleTransformer;
 using GenericMethods.Interfaces;
 using NUnit.Framework;
 
@@ -13,12 +13,12 @@ namespace GenericMethods.Tests.NUnitTests;
     TypeArgs = [typeof(double), typeof(string)])]
 public class ArrayExtensionTransformTestFixture<TSource, TResult>(TSource[] source, TResult[] expected)
 {
-    public ITransformer<TSource, TResult> Transformer { get; } = TransformerCreator(typeof(TSource), typeof(TResult));
+    private readonly ITransformer<TSource, TResult> transformer = TransformerCreator(typeof(TSource), typeof(TResult));
 
     [Test]
     public void TransformerTest()
     {
-        var actual = source.Transform<TSource, TResult>(this.Transformer.Transform);
+        var actual = source.Transform(this.transformer).ToArray();
         Assert.That(actual, Is.EqualTo(expected));
     }
 

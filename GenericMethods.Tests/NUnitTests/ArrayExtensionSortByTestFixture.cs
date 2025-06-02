@@ -1,4 +1,4 @@
-using Comparators;
+﻿using Comparators;
 using NUnit.Framework;
 
 namespace GenericMethods.Tests.NUnitTests;

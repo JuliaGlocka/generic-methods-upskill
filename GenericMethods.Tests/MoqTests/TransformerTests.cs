@@ -1,4 +1,4 @@
-using DoubleTransformer;
+﻿using DoubleTransformer;
 using GenericMethods.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -50,7 +50,7 @@ public class TransformerTests
 
         ITransformer<double, string> transformer = mockPredicate.Object;
 
-        var actual = source.Transform<double, string>(transformer.Transform);
+        var actual = source.Transform(transformer);
 
         Assert.That(expected, Is.EqualTo(actual));
 

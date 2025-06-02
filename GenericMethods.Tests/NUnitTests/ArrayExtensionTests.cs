@@ -1,3 +1,5 @@
+﻿using System;
+using System.Collections.Generic;
 using Comparators;
 using DoubleTransformer;
 using GenericMethods.Interfaces;
@@ -14,19 +16,19 @@ namespace GenericMethods.Tests.NUnitTests
             get
             {
                 yield return new TestCaseData(
-                        new ContainsDigitPredicate(0),
+                        new ContainsDigitPredicate { Digit = 0 },
                         new[] { 2212332, 1405644, -1236674 })
                     .Returns(new[] { 1405644 });
                 yield return new TestCaseData(
-                        new ContainsDigitPredicate(7),
+                        new ContainsDigitPredicate { Digit = 7 },
                         new[] { -27, 173, 371132, 7556, 7243, 10017, int.MinValue, int.MaxValue })
                     .Returns(new[] { -27, 173, 371132, 7556, 7243, 10017, int.MinValue, int.MaxValue });
                 yield return new TestCaseData(
-                    new ContainsDigitPredicate(0),
+                    new ContainsDigitPredicate { Digit = 0 },
                     new[] { int.MinValue, int.MinValue, int.MinValue, int.MaxValue, int.MaxValue })
                     .Returns(Array.Empty<int>());
                 yield return new TestCaseData(
-                        new ContainsDigitPredicate(2),
+                        new ContainsDigitPredicate { Digit = 2 },
                         new[] { -123, 123, 2202, 3333, 4444, 55055, 0, -7, 5402, 9, 0, -150, 287 })
                     .Returns(new[] { -123, 123, 2202, 5402, 287 });
             }
@@ -82,10 +84,8 @@ namespace GenericMethods.Tests.NUnitTests
         }
 
         [TestCaseSource(nameof(TransformerTestCases))]
-        public string[] TransformerTests(ITransformer<double, string>? transformer, double[] source)
-        {
-            return transformer != null ? source.Transform<double, string>(transformer.Transform) : [];
-        }
+        public string[] TransformerTests(ITransformer<double, string> transformer, double[] source) =>
+            source.Transform(transformer);
 
         [TestCaseSource(nameof(SortByTestCases))]
         public string[] SortByTests(IComparer<string> comparer, string[] source) => source.SortBy(comparer);
