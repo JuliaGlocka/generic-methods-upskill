@@ -1,75 +1,83 @@
+using System;
+using System.Collections.Generic;
 using GenericMethods.Interfaces;
 
 namespace GenericMethods
 {
-    /// <summary>
-    /// Provides generic extension methods for arrays.
-    /// </summary>
     public static class ArrayExtension
     {
-        public static TResult[] Transform<TSource, TResult>(this TSource[] source, Func<TSource, TResult> transformer)
+        // 1. TypeOf<T> extension for object[]
+        public static T[] TypeOf<T>(this object[] source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+
+            var list = new List<T>();
+            foreach (var obj in source)
+            {
+                if (obj is T t)
+                {
+                    list.Add(t);
+                }
+            }
+
+            return list.ToArray();
+        }
+
+        // 2. Transform<TSource, TResult>
+        public static TResult[] Transform<TSource, TResult>(this TSource[] source, ITransformer<TSource, TResult> transformer)
         {
             ArgumentNullException.ThrowIfNull(source);
             ArgumentNullException.ThrowIfNull(transformer);
 
-            TResult[] result = new TResult[source.Length];
+            var result = new TResult[source.Length];
             for (int i = 0; i < source.Length; i++)
             {
-                result[i] = transformer(source[i]);
+                result[i] = transformer.Transform(source[i]);
             }
 
             return result;
         }
 
-        public static T[] Filter<T>(this T[] source, Predicate<T> predicate)
-        {
-            ArgumentNullException.ThrowIfNull(source);
-            ArgumentNullException.ThrowIfNull(predicate);
-
-            return source.Where(item => predicate(item)).ToArray();
-        }
-
-        // Overload for IPredicate<T> (for tests)
+        // 3. Filter<T>
         public static T[] Filter<T>(this T[] source, IPredicate<T> predicate)
         {
             ArgumentNullException.ThrowIfNull(source);
             ArgumentNullException.ThrowIfNull(predicate);
 
-            return source.Where(item => predicate.IsMatch(item)).ToArray();
+            var list = new List<T>();
+            foreach (var item in source)
+            {
+                if (predicate.IsMatch(item))
+                {
+                    list.Add(item);
+                }
+            }
+
+            return list.ToArray();
         }
 
-        // Now returns the sorted array for test compatibility!
+        // 4. SortBy<T>
         public static T[] SortBy<T>(this T[] source, IComparer<T> comparer)
         {
             ArgumentNullException.ThrowIfNull(source);
             ArgumentNullException.ThrowIfNull(comparer);
-            Array.Sort(source, comparer);
-            return source;
+
+            var copy = (T[])source.Clone();
+            Array.Sort(copy, comparer);
+            return copy;
         }
 
-        public static void Swap<T>(this T[] array, int indexA, int indexB)
+        // 5. Reverse<T>
+        public static T[] Reverse<T>(this T[] source)
         {
-            ArgumentNullException.ThrowIfNull(array);
+            ArgumentNullException.ThrowIfNull(source);
 
-            if (indexA < 0 || indexA >= array.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(indexA));
-            }
-
-            if (indexB < 0 || indexB >= array.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(indexB));
-            }
-
-            if (indexA == indexB)
-            {
-                return;
-            }
-
-            (array[indexA], array[indexB]) = (array[indexB], array[indexA]);
+            var copy = (T[])source.Clone();
+            Array.Reverse(copy);
+            return copy;
         }
 
-        // For ref-based Swap (used in tests)
+        // 6. Swap<T>
         public static void Swap<T>(ref T left, ref T right)
         {
             (left, right) = (right, left);
