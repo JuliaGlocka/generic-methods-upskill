@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GenericMethods.Interfaces;
 
 namespace GenericMethods
 {
@@ -8,9 +9,6 @@ namespace GenericMethods
     /// </summary>
     public static class ArrayExtension
     {
-        /// <summary>
-        /// Transforms each element in the source array using the provided transformer.
-        /// </summary>
         public static TResult[] Transform<TSource, TResult>(this TSource[] source, Func<TSource, TResult> transformer)
         {
             ArgumentNullException.ThrowIfNull(source);
@@ -21,38 +19,51 @@ namespace GenericMethods
             {
                 result[i] = transformer(source[i]);
             }
-
             return result;
         }
 
-        /// <summary>
-        /// Filters elements by predicate.
-        /// </summary>
         public static T[] Filter<T>(this T[] source, Predicate<T> predicate)
         {
             ArgumentNullException.ThrowIfNull(source);
             ArgumentNullException.ThrowIfNull(predicate);
 
-            List<T> result = [];
-            result.AddRange(source.Where(item => predicate(item)));
-
+            var result = new List<T>();
+            foreach (var item in source)
+            {
+                if (predicate(item))
+                {
+                    result.Add(item);
+                }
+            }
             return result.ToArray();
         }
 
-        /// <summary>
-        /// Sorts an array in-place using the provided comparer.
-        /// </summary>
-        public static void SortBy<T>(this T[] source, IComparer<T> comparer)
+        // Overload for IPredicate<T> (for tests)
+        public static T[] Filter<T>(this T[] source, IPredicate<T> predicate)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+            ArgumentNullException.ThrowIfNull(predicate);
+
+            var result = new List<T>();
+            foreach (var item in source)
+            {
+                if (predicate.IsMatch(item))
+                {
+                    result.Add(item);
+                }
+            }
+            return result.ToArray();
+        }
+
+        // Now returns the sorted array for test compatibility!
+        public static T[] SortBy<T>(this T[] source, IComparer<T> comparer)
         {
             ArgumentNullException.ThrowIfNull(source);
             ArgumentNullException.ThrowIfNull(comparer);
-
             Array.Sort(source, comparer);
+            return source;
         }
 
-        /// <summary>
-        /// Swaps two elements in an array.
-        /// </summary>
         public static void Swap<T>(this T[] array, int indexA, int indexB)
         {
             ArgumentNullException.ThrowIfNull(array);
@@ -73,6 +84,12 @@ namespace GenericMethods
             }
 
             (array[indexA], array[indexB]) = (array[indexB], array[indexA]);
+        }
+
+        // For ref-based Swap (used in tests)
+        public static void Swap<T>(ref T left, ref T right)
+        {
+            (left, right) = (right, left);
         }
     }
 }

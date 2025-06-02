@@ -30,7 +30,7 @@ namespace IntegerPredicate
 
             while (absNumber > 0)
             {
-                if (absNumber % 10 == Digit)
+                if (absNumber % 10 == this.Digit)
                 {
                     return true;
                 }

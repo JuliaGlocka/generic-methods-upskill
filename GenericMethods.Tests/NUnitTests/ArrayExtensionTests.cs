@@ -85,7 +85,7 @@ namespace GenericMethods.Tests.NUnitTests
 
         [TestCaseSource(nameof(TransformerTestCases))]
         public string[] TransformerTests(ITransformer<double, string> transformer, double[] source) =>
-            source.Transform(transformer);
+            source.Transform<double, string>(transformer.Transform);
 
         [TestCaseSource(nameof(SortByTestCases))]
         public string[] SortByTests(IComparer<string> comparer, string[] source) => source.SortBy(comparer);

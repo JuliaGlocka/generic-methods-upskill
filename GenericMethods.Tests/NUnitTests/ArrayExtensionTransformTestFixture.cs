@@ -1,4 +1,4 @@
-﻿using DoubleTransformer;
+using DoubleTransformer;
 using GenericMethods.Interfaces;
 using NUnit.Framework;
 
@@ -18,7 +18,7 @@ public class ArrayExtensionTransformTestFixture<TSource, TResult>(TSource[] sour
     [Test]
     public void TransformerTest()
     {
-        var actual = source.Transform(this.transformer).ToArray();
+        var actual = source.Transform<TSource, TResult>(transformer.Transform);
         Assert.That(actual, Is.EqualTo(expected));
     }
 

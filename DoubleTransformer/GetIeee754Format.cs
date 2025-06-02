@@ -1,16 +1,21 @@
-using System;
+using GenericMethods.Interfaces;
 
 namespace DoubleTransformer
 {
-    /// <summary>
-    /// Provides a method to get the IEEE 754 binary format of a double.
-    /// </summary>
-    public static class GetIeee754Format
+    public class GetIeee754Format : ITransformer<double, string>
     {
-        public static string Transform(double value)
+        public string Transform(double value)
         {
-            ulong bits = BitConverter.ToUInt64(BitConverter.GetBytes(value), 0);
-            return Convert.ToString((long)bits, 2).PadLeft(64, '0');
+            unsafe
+            {
+                ulong bits = *(ulong*)(&value);
+                char[] chars = new char[64];
+                for (int i = 63; i >= 0; i--)
+                {
+                    chars[63 - i] = ((bits & ((ulong)1 << i)) != 0) ? '1' : '0';
+                }
+                return new string(chars);
+            }
         }
     }
 }
