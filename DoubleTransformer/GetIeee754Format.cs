@@ -8,12 +8,13 @@ namespace DoubleTransformer
         {
             unsafe
             {
-                ulong bits = *(ulong*)(&value);
+                ulong bits = *(ulong*)&value;
                 char[] chars = new char[64];
                 for (int i = 63; i >= 0; i--)
                 {
-                    chars[63 - i] = ((bits & ((ulong)1 << i)) != 0) ? '1' : '0';
+                    chars[63 - i] = ((bits & (1UL << i)) != 0) ? '1' : '0';
                 }
+
                 return new string(chars);
             }
         }

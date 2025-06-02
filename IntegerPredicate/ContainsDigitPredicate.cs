@@ -1,4 +1,3 @@
-using System;
 using GenericMethods.Interfaces;
 
 namespace IntegerPredicate
@@ -34,7 +33,8 @@ namespace IntegerPredicate
                     }
 
                     n /= 10;
-                } while (n != 0);
+                }
+                while (n != 0);
 
                 return false;
             }

@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 namespace GenericMethods.Tests.NUnitTests
 {
     public static class TypeOfExtensions

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using GenericMethods.Interfaces;
 
 namespace GenericMethods
@@ -19,6 +17,7 @@ namespace GenericMethods
             {
                 result[i] = transformer(source[i]);
             }
+
             return result;
         }
 
@@ -27,15 +26,7 @@ namespace GenericMethods
             ArgumentNullException.ThrowIfNull(source);
             ArgumentNullException.ThrowIfNull(predicate);
 
-            var result = new List<T>();
-            foreach (var item in source)
-            {
-                if (predicate(item))
-                {
-                    result.Add(item);
-                }
-            }
-            return result.ToArray();
+            return source.Where(item => predicate(item)).ToArray();
         }
 
         // Overload for IPredicate<T> (for tests)
@@ -44,15 +35,7 @@ namespace GenericMethods
             ArgumentNullException.ThrowIfNull(source);
             ArgumentNullException.ThrowIfNull(predicate);
 
-            var result = new List<T>();
-            foreach (var item in source)
-            {
-                if (predicate.IsMatch(item))
-                {
-                    result.Add(item);
-                }
-            }
-            return result.ToArray();
+            return source.Where(item => predicate.IsMatch(item)).ToArray();
         }
 
         // Now returns the sorted array for test compatibility!
