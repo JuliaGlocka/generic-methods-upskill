@@ -1,4 +1,4 @@
-using GenericMethods.Interfaces;
+﻿using GenericMethods.Interfaces;
 using IntegerPredicate;
 using Moq;
 using NUnit.Framework;
@@ -17,7 +17,7 @@ public class PredicateTests
         var mockPredicate = new Mock<IPredicate<int>>();
 
         mockPredicate
-            .Setup(p => p.IsMatch(It.Is<int>(i => new ContainsDigitPredicate(5).IsMatch(i))))
+            .Setup(p => p.IsMatch(It.Is<int>(i => new ContainsDigitPredicate { Digit = 5 }.IsMatch(i))))
             .Returns(true);
 
         IPredicate<int> predicate = mockPredicate.Object;
@@ -37,7 +37,7 @@ public class PredicateTests
         Mock<IPredicate<int>> mockPredicate = new Mock<IPredicate<int>>();
 
         mockPredicate
-            .Setup(p => p.IsMatch(It.Is<int>(i => new ContainsDigitPredicate(5).IsMatch(i))))
+            .Setup(p => p.IsMatch(It.Is<int>(i => new ContainsDigitPredicate { Digit = 5 }.IsMatch(i))))
             .Returns(true);
 
         IPredicate<int> predicate = mockPredicate.Object;
@@ -57,13 +57,12 @@ public class PredicateTests
         Mock<IPredicate<int>> mockPredicate = new Mock<IPredicate<int>>();
 
         mockPredicate
-            .Setup(p => p.IsMatch(It.Is<int>(i => new ContainsDigitPredicate(5).IsMatch(i))))
+            .Setup(p => p.IsMatch(It.Is<int>(i => new ContainsDigitPredicate { Digit = 5 }.IsMatch(i))))
             .Returns(true);
 
         IPredicate<int> predicate = mockPredicate.Object;
 
-        // Convert IPredicate<int> to System.Predicate<int> using a lambda
-        var actual = source.Filter(i => predicate.IsMatch(i));
+        var actual = source.Filter(predicate);
 
         Assert.That(expected, Is.EqualTo(actual));
 

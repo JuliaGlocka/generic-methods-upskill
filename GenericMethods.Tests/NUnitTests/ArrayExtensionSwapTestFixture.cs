@@ -1,5 +1,5 @@
-using GenericMethods; // Ensure the namespace containing ArrayExtension is imported
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using static GenericMethods.ArrayExtension;
 
 namespace GenericMethods.Tests.NUnitTests;
 
@@ -15,7 +15,7 @@ internal class ArrayExtensionSwapTestFixture<T>(T left, T right)
     {
         T expectedLeft = right;
         T expectedRight = left;
-        ArrayExtension.Swap(ref left, ref right); // Fully qualify the method call
+        Swap(ref left, ref right);
         Assert.That(left!.Equals(expectedLeft) && right!.Equals(expectedRight));
     }
 }
