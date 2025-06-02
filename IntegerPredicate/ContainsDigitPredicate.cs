@@ -1,28 +1,44 @@
-﻿using GenericMethods.Interfaces;
+using System;
 
-namespace IntegerPredicate;
-
-/// <summary>
-/// Predicate class for the integer type.
-/// </summary>
-public class ContainsDigitPredicate : IPredicate<int>
+namespace IntegerPredicate
 {
     /// <summary>
-    /// Gets or sets digit in the integer number.
+    /// Predicate that checks if an integer contains a specific digit.
     /// </summary>
-    public int Digit
+    public class ContainsDigitPredicate
     {
-        get => throw new NotImplementedException();
-        set => throw new NotImplementedException();
-    }
+        public ContainsDigitPredicate(int digit)
+        {
+            if (digit < 0 || digit > 9)
+            {
+                throw new ArgumentOutOfRangeException(nameof(digit), "Digit must be between 0 and 9.");
+            }
 
-    /// <summary>
-    /// Determines if a number contains a given digit.
-    /// </summary>
-    /// <param name="obj">The integer value.</param>
-    /// <returns>true if integer value contains given digit; otherwise, false.</returns>
-    public bool IsMatch(int obj)
-    {
-        throw new NotImplementedException();
+            this.Digit = digit;
+        }
+
+        public int Digit { get; set; }
+
+        public bool IsMatch(int number)
+        {
+            int absNumber = Math.Abs(number);
+
+            if (absNumber == 0 && this.Digit == 0)
+            {
+                return true;
+            }
+
+            while (absNumber > 0)
+            {
+                if (absNumber % 10 == Digit)
+                {
+                    return true;
+                }
+
+                absNumber /= 10;
+            }
+
+            return false;
+        }
     }
 }

@@ -1,19 +1,16 @@
-﻿using GenericMethods.Interfaces;
+using System;
 
-namespace DoubleTransformer;
-
-/// <summary>
-/// Transformer class for double.
-/// </summary>
-public class GetIeee754Format : ITransformer<double, string>
+namespace DoubleTransformer
 {
     /// <summary>
-    /// Transform double value to IEEE754 format <see cref="https://www.wikiwand.com/en/IEEE_754"/> in the string form.
+    /// Provides a method to get the IEEE 754 binary format of a double.
     /// </summary>
-    /// <param name="obj">The double value.</param>
-    /// <returns>The IEEE754 format in the string form.</returns>
-    public string Transform(double obj)
+    public static class GetIeee754Format
     {
-        throw new NotImplementedException();
+        public static string Transform(double value)
+        {
+            ulong bits = BitConverter.ToUInt64(BitConverter.GetBytes(value), 0);
+            return Convert.ToString((long)bits, 2).PadLeft(64, '0');
+        }
     }
 }

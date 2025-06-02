@@ -1,4 +1,4 @@
-﻿using DoubleTransformer;
+using DoubleTransformer;
 using GenericMethods.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -46,11 +46,11 @@ public class TransformerTests
 
         mockPredicate
             .Setup(t => t.Transform(It.IsAny<double>()))
-            .Returns((double d) => new GetIeee754Format().Transform(d));
+            .Returns((double d) => GetIeee754Format.Transform(d));
 
         ITransformer<double, string> transformer = mockPredicate.Object;
 
-        var actual = source.Transform(transformer);
+        var actual = source.Transform<double, string>(transformer.Transform);
 
         Assert.That(expected, Is.EqualTo(actual));
 
