@@ -9,6 +9,8 @@ namespace GenericMethods
         // 1. TypeOf<T> extension for object[]
         public static T[] TypeOf<T>(this object[] source)
         {
+            ArgumentNullException.ThrowIfNull(source);
+
             var list = new List<T>();
             foreach (var obj in source)
             {
@@ -24,35 +26,24 @@ namespace GenericMethods
         // 2. Transform<TSource, TResult>
         public static TResult[] Transform<TSource, TResult>(this TSource[] source, ITransformer<TSource, TResult> transformer)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
+            ArgumentNullException.ThrowIfNull(source);
+            ArgumentNullException.ThrowIfNull(transformer);
 
-            if (transformer == null)
-            {
-                throw new ArgumentNullException(nameof(transformer));
-            }
             var result = new TResult[source.Length];
             for (int i = 0; i < source.Length; i++)
             {
                 result[i] = transformer.Transform(source[i]);
             }
+
             return result;
         }
 
         // 3. Filter<T>
         public static T[] Filter<T>(this T[] source, IPredicate<T> predicate)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
+            ArgumentNullException.ThrowIfNull(source);
+            ArgumentNullException.ThrowIfNull(predicate);
 
-            if (predicate == null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
             var list = new List<T>();
             foreach (var item in source)
             {
@@ -61,21 +52,16 @@ namespace GenericMethods
                     list.Add(item);
                 }
             }
+
             return list.ToArray();
         }
 
         // 4. SortBy<T>
         public static T[] SortBy<T>(this T[] source, IComparer<T> comparer)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
+            ArgumentNullException.ThrowIfNull(source);
+            ArgumentNullException.ThrowIfNull(comparer);
 
-            if (comparer == null)
-            {
-                throw new ArgumentNullException(nameof(comparer));
-            }
             var copy = (T[])source.Clone();
             Array.Sort(copy, comparer);
             return copy;
@@ -84,7 +70,8 @@ namespace GenericMethods
         // 5. Reverse<T>
         public static T[] Reverse<T>(this T[] source)
         {
-            if (source == null) {throw new ArgumentNullException(nameof(source));}
+            ArgumentNullException.ThrowIfNull(source);
+
             var copy = (T[])source.Clone();
             Array.Reverse(copy);
             return copy;

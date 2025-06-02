@@ -1,10 +1,11 @@
+using System;
+using System.Globalization;
 using GenericMethods.Interfaces;
+
 namespace IntegerPredicate
 {
     public class ContainsDigitPredicate : IPredicate<int>
     {
-        public int Digit { get; set; }
-
         public ContainsDigitPredicate()
         {
         }
@@ -14,9 +15,11 @@ namespace IntegerPredicate
             this.Digit = digit;
         }
 
+        public int Digit { get; set; }
+
         public bool IsMatch(int value)
         {
-            int digit = System.Math.Abs(Digit);
+            int digit = Math.Abs(this.Digit);
 
             // Special case: digit == 0 and value == 0
             if (digit == 0 && value == 0)
@@ -25,15 +28,15 @@ namespace IntegerPredicate
             }
 
             // Use string-based approach to avoid Math.Abs(int.MinValue) overflow
-            string s = System.Math.Abs(digit).ToString();
-            string v = value.ToString();
-            // Remove leading '-' if present
-            if (v.StartsWith("-"))
+            string digitStr = digit.ToString(CultureInfo.InvariantCulture);
+            string valueStr = value.ToString(CultureInfo.InvariantCulture);
+
+            if (valueStr.StartsWith('-'))
             {
-                v = v.Substring(1);
+                valueStr = valueStr.Substring(1);
             }
 
-            return v.Contains(s);
+            return valueStr.Contains(digitStr, StringComparison.Ordinal);
         }
     }
 }
